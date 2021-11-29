@@ -1,4 +1,4 @@
-name: 'PR title convention'
+name: 'PR title edict'
 description: 'Github action to enforce Pull Request title conventions'
 author: ""
 inputs:

@@ -1,79 +1,21 @@
-# name: main
-# # This workflow is triggered on pushes to the repository.
-# on:
-#   pull_request:
-#     types: [opened, edited, synchronize, reopened]
-
-# jobs:
-#   build:
-#     # Job name is Greeting
-#     name: Check
-#     # This job runs on Linux
-#     runs-on: 'ubuntu-latest'
-#     steps:
-#       - uses: actions/setup-node@v2
-#         with:
-#             node-version: '14'
-#             cache: npm
-#       - run: npm install
-#       - run: npm test
-#       - uses: vinetiworks/rm-pr-format-rules@1.0.0
-      
-      
-# name: main
-# # This workflow is triggered on pushes to the repository.
-# on:
-#   pull_request:
-#     types: [opened, edited, synchronize, reopened]
-
-# jobs:
-#   build:
-#     name: Check
-#     runs-on: 'ubuntu-latest'
-#     steps:
-#       - uses: vinetiworks/rm-pr-format-rules@1.0.0
-#       - uses: actions/setup-node@v2
-#         with:
-#           node-version: '14.x'
-#       - run: npm install
-#       - name: Validate
-#         uses: ./
-#         with:
-#           github_token: ${{ github.token }}
-
-
-# name: Checker
-# on:
-#   pull_request:
-#     types: [opened, edited, synchronize, reopened]
-# jobs:
-#   ACTION:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: PR checker
-#         uses: vinetiworks/rm-pr-format-rules@1.0.0
-#         with:
-#          prefix_case_sensitive: True
-#       - name: PR checker
-#           uses: actions/checkout@v2
-#           with:
-#             repository: vinetiworks/rm-pr-format-rules
-#             token: ${{ secrets.GitHub_PAT }}
-#       - run: echo "🍏 This job's status is ${{ job.status }}."
-
-
-   
-name: rm-pr-format
+name: main
 # This workflow is triggered on pushes to the repository.
-on: push
-
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
 jobs:
   build:
+    # Job name is Greeting
+    name: Check
+    # This job runs on Linux
     runs-on: 'ubuntu-latest'
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-      - name: build
-        run: |
-          npm ci
-          npm run package
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'      # This step prints an output (time) from the previous step's action.
+      - run: npm install
+      - name: Validate
+        uses: ./
+        with:
+          github_token: ${{ github.token }}

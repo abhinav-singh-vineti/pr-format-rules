@@ -1,4 +1,4 @@
-name: 'Pull Request title rules'
+name: 'PR title convention'
 description: 'Github action to enforce Pull Request title conventions'
 author: ""
 inputs:

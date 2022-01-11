@@ -108,6 +108,11 @@ async function run() {
             return
         }
 
+        if (!rb2.test(desc)){
+            core.setFailed(`Pull Request title "${desc}" failed to pass match regex - ${rb2} for description`);
+            return
+        }
+
         const minLen = parseInt(core.getInput('min_length'));
         if (title.length < minLen) {
             core.setFailed(`Pull Request title "${title}" is smaller than min length specified - ${minLen}`);

@@ -38,9 +38,13 @@ async function run() {
         core.info(`Pull Request title: "${title}"`);
 
         const rb2=/[a-zA-Z]-.+[0-9]/
-        if (!rb2.test(desc) & !rb2.test(title)){
-            core.setFailed(`Pull Request title "${title}" failed to pass match regex - ${rb2} for description`);
+        if (!rb2.test(title)){
             core.setFailed(`Pull Request title "${title}" failed to pass match regex - ${rb2} for title`);
+            return
+        }
+
+        if (!rb2.test(desc)){
+            core.setFailed(`Pull Request title "${desc}" failed to pass match regex - ${rb2} for description`);
             return
         }
 

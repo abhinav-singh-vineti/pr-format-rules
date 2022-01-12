@@ -40,14 +40,14 @@ async function run() {
 
         core.info(`Pull Request title: "${title}"`);
 
-        const rx=/[a-zA-Z]-.+[0-9]/
+        const rx=/\[+[a-zA-Z]+-+[0-9]+\]/
         if (!rx.test(title)){
-            core.setFailed(`Pull Request title "${title}" failed to pass match regex - ${rx} for title`);
+            core.setFailed(`Pull Request title: "${title}" failed to match regex - ${rx} for title`);
             return
         }
         
         if (!rx.test(desc)){
-            core.setFailed(`Pull Request title "${desc}" failed to pass match regex - ${rx} for description`);
+            core.setFailed(`Pull Request description: "${desc}" failed to match regex - ${rx} for description`);
             return
         }
 

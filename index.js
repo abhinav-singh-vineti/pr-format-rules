@@ -42,12 +42,13 @@ async function run() {
 
         const rx=/\[+[a-zA-Z]+-+[0-9]+\]/
         if (!rx.test(title)){
-            core.setFailed(`Pull Request title: "${title}" failed to match regex - ${rx} for title`);
+            core.setFailed(`Pull Request Title failed to match regex - ${rx} for title`);
             return
         }
+        core.info(`Pull Request title: "${desc}"`);
         
         if (!rx.test(desc)){
-            core.setFailed(`Pull Request description: "${desc}" failed to match regex - ${rx} for description`);
+            core.setFailed(`Pull Request Description failed to match regex - ${rx} for description`);
             return
         }
 

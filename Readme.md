@@ -1,4 +1,6 @@
-# About
-Github action to enforce PR title and description format
+## About
 
-# Usage
+Github action to enforce Pull Request title conventions
+
+## Usage
+

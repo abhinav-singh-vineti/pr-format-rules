@@ -1,6 +1,6 @@
-name: 'Pull Request title rules'
+name: 'PR title edict'
 description: 'Github action to enforce Pull Request title conventions'
-author: 'deepakputhraya'
+author: ""
 inputs:
   regex:
     description: 'Regex to validate the pull request title'
@@ -39,6 +39,7 @@ inputs:
 runs:
   using: 'node12'
   main: 'dist/index.js'
+
 branding:
   icon: 'alert-triangle'
   color: 'gray-dark'

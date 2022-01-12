@@ -25,7 +25,10 @@ async function run() {
         const repo = github.context.payload.pull_request.base.repo.name;
 
         const client = new github.GitHub(authToken);
-
+        // The pull request info on the context isn't up to date. When
+        // the user updates the title and re-runs the workflow, it would
+        // be outdated. Therefore fetch the pull request via the REST API
+        // to ensure we use the current title.
         const {data: pullRequest} = await client.pulls.get({
           owner,
           repo,
@@ -37,34 +40,32 @@ async function run() {
 
         core.info(`Pull Request title: "${title}"`);
 
-        const rb2=/[a-zA-Z]-.+[0-9]/
-        if (!rb2.test(title)){
-            core.setFailed(`Pull Request title "${title}" failed to pass match regex - ${rb2} for description`);
+        const rx=/[a-zA-Z]-.+[0-9]/
+        if (!rx.test(title)){
+            core.setFailed(`Pull Request title "${title}" failed to pass match regex - ${rx} for title`);
+            return
+        }
+        
+        if (!rx.test(desc)){
+            core.setFailed(`Pull Request title "${desc}" failed to pass match regex - ${rx} for description`);
             return
         }
 
-        if (!rb2.test(desc)){
-            core.setFailed(`Pull Request title "${desc}" failed to pass match regex - ${rb2} for description`);
-            return
-        }
-
-        if (!rb2.test(desc)){
-            core.setFailed(`Pull Request title "${desc}" failed to pass match regex - ${rb2} for description`);
-            return
-        }
-
+        // Check min length
         const minLen = parseInt(core.getInput('min_length'));
         if (title.length < minLen) {
             core.setFailed(`Pull Request title "${title}" is smaller than min length specified - ${minLen}`);
             return
         }
 
+        // Check max length
         const maxLen = parseInt(core.getInput('max_length'));
         if (maxLen > 0 && title.length > maxLen) {
             core.setFailed(`Pull Request title "${title}" is greater than max length specified - ${maxLen}`);
             return
         }
 
+        // Check if title starts with an allowed prefix
         let prefixes = core.getInput('allowed_prefixes');
         const prefixCaseSensitive = (core.getInput('prefix_case_sensitive') === 'true');
         core.info(`Allowed Prefixes: ${prefixes}`);
@@ -73,6 +74,7 @@ async function run() {
             return
         }
 
+        // Check if title starts with a disallowed prefix
         prefixes = core.getInput('disallowed_prefixes');
         core.info(`Disallowed Prefixes: ${prefixes}`);
         if (prefixes.length > 0 && prefixes.split(',').some((el) => validateTitlePrefix(title, el, prefixCaseSensitive))) {

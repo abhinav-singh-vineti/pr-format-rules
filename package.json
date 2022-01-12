@@ -1,7 +1,7 @@
 {
-  "name": "action-pr-title",
-  "version": "1.0.0",
-  "description": "Github action to enforce naming convention on Pull Request titles",
+  "name": "enforce_pr_title_action",
+  "version": "3.0.0",
+  "description": "Github action to enforce PR title and description format",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",

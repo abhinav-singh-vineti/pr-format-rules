@@ -1,31 +1,7 @@
 name: 'PR title edict'
-description: 'Github action to enforce Pull Request title conventions'
+description: 'Github action to enforce check for Jira tickets in PR as well as description as well as the status of the ticket.'
 author: ""
 inputs:
-  regex:
-    description: 'Regex to validate the pull request title'
-    required: false
-    default: '.+'
-  allowed_prefixes:
-    description: 'Comma separated list of prefix allowed to be used in title. eg: feature,hotfix,JIRA-'
-    required: false
-    default: ''
-  disallowed_prefixes:
-    description: 'Comma separated list of prefix disallowed to be used in title. eg: feat,fix'
-    required: false
-    default: ''
-  prefix_case_sensitive:
-    description: 'Are the allowed & disallowed prefixes case sensitive?'
-    required: false
-    default: 'false'
-  min_length:
-    description: 'Min length of title'
-    required: false
-    default: '1'
-  max_length:
-    description: 'Max length of title. -1 to ignore the rule'
-    required: false
-    default: '-1'
   github_token:
     description: >
       Personal access token (PAT) used to fetch the repository. The PAT is configured
@@ -35,6 +11,15 @@ inputs:
       Also when generating a new PAT, select the least scopes necessary.
     required: false
     default: ${{ github.token }}
+  jira-api-token:
+    description: 'API Token used to access the JIRA REST API. Must have read access to your JIRA Projects & Issues.'
+    required: true
+  jira-user-email:
+    description: 'User email used to access the JIRA REST API. Must have read access to your JIRA Projects & Issues.'
+    required: true
+  jira-base-url:
+    description: 'The subdomain of JIRA cloud that you use to access it. Ex: "https://your-domain.atlassian.net"'
+    required: true
 
 runs:
   using: 'node12'

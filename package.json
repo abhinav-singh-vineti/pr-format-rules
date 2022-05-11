@@ -1,20 +1,26 @@
 {
-  "name": "enforce_pr_title_action",
-  "version": "3.0.0",
-  "description": "Github action to enforce PR title and description format",
+  "name": "pr-format-rules",
+  "version": "2.0.0",
+  "description": "Github action to enforce check for Jira tickets in PR as well as description as well as the status of the ticket.",
   "main": "index.js",
-  "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "dependencies": {
+    "@actions/core": "1.6.0",
+    "@actions/github": "5.0.0",
+    "@vercel/ncc": "0.33.4",
+    "jira-client": "^8.1.0"
   },
-  "keywords": [
-    "github",
-    "actions"
-  ],
+  "devDependencies": {},
+  "scripts": {
+    "package": "ncc build index.js -o dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abhinav-singh-vineti/pr-format-rules.git"
+  },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "@actions/core": "^1.2.6",
-    "@actions/github": "^1.1.0"
-  }
+  "bugs": {
+    "url": "https://github.com/abhinav-singh-vineti/pr-format-rules/issues"
+  },
+  "homepage": "https://github.com/abhinav-singh-vineti/pr-format-rules#readme"
 }

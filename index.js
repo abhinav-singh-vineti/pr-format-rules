@@ -1,19 +1,15 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
+const JiraApi = require('jira-client')
 
 const validEvent = ['pull_request'];
-
-function validateTitlePrefix(title, prefix, caseSensitive) {
-    if (!caseSensitive) {
-        prefix = prefix.toLowerCase();
-        title = title.toLowerCase();
-    }
-    return title.startsWith(prefix);
-}
 
 async function run() {
     try {
         const authToken = core.getInput('github_token', {required: true})
+        const JIRA_USER_EMAIL = core.getInput('jira-user-email', { required: true });
+        const JIRA_API_TOKEN = core.getInput('jira-api-token', { required: true });
+        const JIRA_BASE_URL = core.getInput('jira-base-url', { required: true });
         const eventName = github.context.eventName;
         core.info(`Event name: ${eventName}`);
         if (validEvent.indexOf(eventName) < 0) {
@@ -25,10 +21,6 @@ async function run() {
         const repo = github.context.payload.pull_request.base.repo.name;
 
         const client = new github.GitHub(authToken);
-        // The pull request info on the context isn't up to date. When
-        // the user updates the title and re-runs the workflow, it would
-        // be outdated. Therefore fetch the pull request via the REST API
-        // to ensure we use the current title.
         const {data: pullRequest} = await client.pulls.get({
           owner,
           repo,
@@ -52,37 +44,36 @@ async function run() {
             return
         }
 
-        // Check min length
-        const minLen = parseInt(core.getInput('min_length'));
-        if (title.length < minLen) {
-            core.setFailed(`Pull Request title "${title}" is smaller than min length specified - ${minLen}`);
-            return
-        }
+        let jira = new JiraApi({
+            protocol: 'https',
+            host: JIRA_BASE_URL,
+            username: JIRA_USER_EMAIL,
+            password: JIRA_API_TOKEN,
+            apiVersion: '2',
+            strictSSL: true
+        });
 
-        // Check max length
-        const maxLen = parseInt(core.getInput('max_length'));
-        if (maxLen > 0 && title.length > maxLen) {
-            core.setFailed(`Pull Request title "${title}" is greater than max length specified - ${maxLen}`);
-            return
-        }
+        const match = test.match(rx)
+        const issueNumber = match ? match[0] : null
 
-        // Check if title starts with an allowed prefix
-        let prefixes = core.getInput('allowed_prefixes');
-        const prefixCaseSensitive = (core.getInput('prefix_case_sensitive') === 'true');
-        core.info(`Allowed Prefixes: ${prefixes}`);
-        if (prefixes.length > 0 && !prefixes.split(',').some((el) => validateTitlePrefix(title, el, prefixCaseSensitive))) {
-            core.setFailed(`Pull Request title "${title}" did not match any of the prefixes - ${prefixes}`);
-            return
+        if (!issueNumber) {
+            return core.setFailed('No issue number found. Assuming not ready.');
         }
-
-        // Check if title starts with a disallowed prefix
-        prefixes = core.getInput('disallowed_prefixes');
-        core.info(`Disallowed Prefixes: ${prefixes}`);
-        if (prefixes.length > 0 && prefixes.split(',').some((el) => validateTitlePrefix(title, el, prefixCaseSensitive))) {
-            core.setFailed(`Pull Request title "${title}" matched with a disallowed prefix - ${prefixes}`);
-            return
-        }
-
+        
+        jira.findIssue(issueNumber)
+            .then(issue => {
+                const statusFound = issue.fields.status.name;
+                console.log(`Status: ${statusFound}`);
+                core.setOutput("status", statusFound);
+    
+                if (statusFound !== "In Acceptance") {
+                    core.setFailed(`Status must be "In Acceptance". Found "${statusFound}".`);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                core.setFailed(error.message);
+            });
     } catch (error) {
         core.setFailed(error.message);
     }

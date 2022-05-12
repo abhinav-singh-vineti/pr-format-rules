@@ -1,0 +1,15 @@
+{
+  "name": "action-ticket-check",
+  "version": "1.0.0",
+  "description": "Github action to enforce check for Jira tickets in PR as well as description as well as the status of the ticket.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@actions/core": "^1.2.6",
+    "@actions/github": "^1.1.0",
+    "jira-client": "^8.1.0"
+  }
+}

@@ -64262,14 +64262,14 @@ async function run() {
         const title = pullRequest.title;
         const desc = pullRequest.body;
 
-        core.info(`Pull Request title: "${title}"`);
+        core.info(`Pull Request Title: "${title}"`);
 
         const rx=/\[+[a-zA-Z]+-+[0-9]+\]/
         if (!rx.test(title)){
             core.setFailed(`Pull Request Title failed to match regex - ${rx} for title`);
             return
         }
-        core.info(`Pull Request title: "${desc}"`);
+        core.info(`Pull Request Description: "${desc}"`);
         
         if (!rx.test(desc)){
             core.setFailed(`Pull Request Description failed to match regex - ${rx} for description`);
@@ -64284,8 +64284,8 @@ async function run() {
             apiVersion: '2',
             strictSSL: true
         });
-
-        const match = title.match(rx)
+        const rx2=/[a-zA-Z]+-+[0-9]+/
+        const match = title.match(rx2)
         const issueNumber = match ? match[0] : null
 
         if (!issueNumber) {

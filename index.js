@@ -52,8 +52,8 @@ async function run() {
             apiVersion: '2',
             strictSSL: true
         });
-
-        const match = title.match(rx)
+        const rx2=/[a-zA-Z]+-+[0-9]+/
+        const match = title.match(rx2)
         const issueNumber = match ? match[0] : null
 
         if (!issueNumber) {

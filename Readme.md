@@ -1,7 +1,7 @@
 
 ```yaml
 steps:
-- uses: deepakputhraya/action-pr-title@master
+- uses: abhinav-singh-vineti/pr-format-rules@master
   with:
     jira-api-token: #{{ secrets.token }}
     jira-user-email: #User email used to access the JIRA REST API

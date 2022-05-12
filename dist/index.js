@@ -64291,7 +64291,7 @@ async function run() {
         if (!issueNumber) {
             return core.setFailed('No issue number found. Assuming not ready.');
         }
-        
+        core.info(issueNumber);
         jira.findIssue(issueNumber)
             .then(issue => {
                 const statusFound = issue.fields.status.name;

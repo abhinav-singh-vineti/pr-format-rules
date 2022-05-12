@@ -64285,7 +64285,7 @@ async function run() {
             strictSSL: true
         });
 
-        const match = test.match(rx)
+        const match = title.match(rx)
         const issueNumber = match ? match[0] : null
 
         if (!issueNumber) {

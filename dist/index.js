@@ -64295,7 +64295,7 @@ async function run() {
         jira.findIssue(issueNumber)
             .then(issue => {
               const resolution = issue.fields.resolution;
-              if (resolution == "null") {
+              if (resolution == null) {
                   core.setFailed(`Resolution should not be "${resolution}".`);
               }
               else{

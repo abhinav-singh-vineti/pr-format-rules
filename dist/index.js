@@ -64294,8 +64294,8 @@ async function run() {
         core.info(issueNumber);
         jira.findIssue(issueNumber)
             .then(issue => {
-                const statusFound = issue.fields.status.name;
-                console.log(`Status: ${statusFound}`);
+              const statusFound = issue.fields.resolution;
+              console.log(`Status: ${statusFound}`);
                 core.setOutput("status", statusFound);
     
                 if (statusFound !== "In Acceptance") {

@@ -64299,7 +64299,7 @@ async function run() {
                   core.setFailed(`Resolution should not be "${resolution}".`);
               }
               else{
-                  core.setFailed(`This issue is resolved with resolution status "${resolution.name}".`);
+                core.info(`This issue is resolved with resolution status "${resolution.name}".`);
               }
             })
             .catch(err => {

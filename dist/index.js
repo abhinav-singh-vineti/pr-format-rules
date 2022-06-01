@@ -64294,13 +64294,13 @@ async function run() {
         core.info(issueNumber);
         jira.findIssue(issueNumber)
             .then(issue => {
-              const statusFound = issue.fields.resolution;
-              console.log(`Status: ${statusFound}`);
-                core.setOutput("status", statusFound);
-    
-                if (statusFound !== "In Acceptance") {
-                    core.setFailed(`Status must be "In Acceptance". Found "${statusFound}".`);
-                }
+              const resolution = issue.fields.resolution;
+              if (resolution == "null") {
+                  core.setFailed(`Resolution should not be "${resolution}".`);
+              }
+              else{
+                  core.setFailed(`This issue is resolved with resolution status "${resolution.name}".`);
+              }
             })
             .catch(err => {
                 console.error(err);
